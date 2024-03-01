@@ -12,14 +12,25 @@ if (isset($_POST['tambah'])) {
     // Query untuk menambahkan user baru
     $sql = "INSERT INTO users (username, email, name, role) VALUES ('$username', '$email', '$name', '$role')";
     if (mysqli_query($koneksi, $sql)) {
-        echo "<script>
-            alert('Data Berhasil Disimpan');
-            window.location.href = '../admin/user.php';
-        </script>";
+        if($_SESSION['role']=== "admin"){
+            echo "<script>
+            alert('Data Berhasil DiSimpan');
+            location.href='../admin/user.php';
+            </script>";
+            
+        }
+        else{
+            echo "<script>
+            alert('Data Berhasil DiSimpan');
+            location.href='../users/user.php';
+            </script>";
+    
+        }
     } else {
         echo "<script>
             alert('Error: " . mysqli_error($koneksi) . "');
             window.location.href = '../admin/user.php';
+            window.location.href = '../users/user.php';
         </script>";
     }
 }
@@ -35,14 +46,25 @@ if (isset($_POST['edit'])) {
     // Query untuk mengupdate data user
     $sql = "UPDATE users SET username='$username', email='$email', name='$name', role='$role' WHERE user_id='$user_id'";
     if (mysqli_query($koneksi, $sql)) {
-        echo "<script>
-            alert('Data Berhasil Diupdate');
-            window.location.href = '../admin/user.php';
-        </script>";
+        if($_SESSION['role']=== "admin"){
+            echo "<script>
+            alert('Data Berhasil DiSimpan');
+            location.href='../admin/user.php';
+            </script>";
+            
+        }
+        else{
+            echo "<script>
+            alert('Data Berhasil DiSimpan');
+            location.href='../users/user.php';
+            </script>";
+    
+        }
     } else {
         echo "<script>
             alert('Error: " . mysqli_error($koneksi) . "');
             window.location.href = '../admin/user.php';
+            window.location.href = '../users/user.php';
         </script>";
     }
 }
@@ -54,14 +76,25 @@ if (isset($_POST['hapus'])) {
     // Query untuk menghapus user berdasarkan user_id
     $sql = "DELETE FROM users WHERE user_id='$user_id'";
     if (mysqli_query($koneksi, $sql)) {
-        echo "<script>
-            alert('Data Berhasil Dihapus');
-            window.location.href = '../admin/user.php';
-        </script>";
+        if($_SESSION['role']=== "admin"){
+            echo "<script>
+            alert('Data Berhasil DiSimpan');
+            location.href='../admin/user.php';
+            </script>";
+            
+        }
+        else{
+            echo "<script>
+            alert('Data Berhasil DiSimpan');
+            location.href='../users/user.php';
+            </script>";
+    
+        }
     } else {
         echo "<script>
             alert('Error: " . mysqli_error($koneksi) . "');
             window.location.href = '../admin/user.php';
+            window.location.href = '../users/user.php';
         </script>";
     }
 }

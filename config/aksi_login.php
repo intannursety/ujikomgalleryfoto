@@ -16,6 +16,7 @@ if (isset($_POST['Kirim'])) {
             // Jika verifikasi berhasil, atur sesi pengguna dan arahkan sesuai peran
             $_SESSION['username'] = $user['username'];
             $_SESSION['user_id'] = $user['user_id'];
+            $_SESSION['role']=$user['role'];
             $_SESSION['status'] = 'login';
 
             // Ambil peran pengguna dari database dan arahkan sesuai peran

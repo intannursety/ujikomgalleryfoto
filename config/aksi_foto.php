@@ -19,10 +19,20 @@ if (isset($_POST['tambah'])) {
     $sql = mysqli_query($koneksi, "INSERT INTO photos (user_id,album_id,title,description,lokasifile,created_at) VALUES ('$user_id', '$album_id', '$title', '$descriptionfoto', 
     '$namafoto','$datenow' )");
 
+if($_SESSION['role']=== "admin"){
     echo "<script>
-    alert('Data Berhasil Tersimpan');
+    alert('Data Berhasil DiSimpan');
     location.href='../admin/foto.php';
     </script>";
+    
+}
+else{
+    echo "<script>
+    alert('Data Berhasil DiSimpan');
+    location.href='../users/foto.php';
+    </script>";
+
+}
     //var_dump($koneksi);
 }
 
@@ -53,10 +63,20 @@ if (isset($_POST['edit'])) {
         WHERE photo_id='$foto_id'");
     //var_dump($koneksi);
     }
-    echo "<script>
-        alert('Data Berhasil Di Edit');
+    if($_SESSION['role']=== "admin"){
+        echo "<script>
+        alert('Data Berhasil DiSimpan');
         location.href='../admin/foto.php';
-    </script>";
+        </script>";
+        
+    }
+    else{
+        echo "<script>
+        alert('Data Berhasil DiSimpan');
+        location.href='../users/foto.php';
+        </script>";
+
+    }
     
 }
 if (isset($_POST['hapus'])) {
@@ -70,8 +90,18 @@ if (isset($_POST['hapus'])) {
 
     $sql = mysqli_query($koneksi, "DELETE FROM photos WHERE photo_id='$photo_id'");
 
-    echo "<script>
-        alert('Data Berhasil DiHapus');
+    if($_SESSION['role']=== "admin"){
+        echo "<script>
+        alert('Data Berhasil DiSimpan');
         location.href='../admin/foto.php';
-    </script>";
+        </script>";
+        
+    }
+    else{
+        echo "<script>
+        alert('Data Berhasil DiSimpan');
+        location.href='../users/foto.php';
+        </script>";
+
+    }
 }

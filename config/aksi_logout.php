@@ -4,6 +4,6 @@ session_destroy();
 
 echo "<script>
 alert('Logout Success');
-location.href='../guest.php';
+location.href='../index.php';
 </script>";
 ?>
