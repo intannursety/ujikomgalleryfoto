@@ -3,7 +3,7 @@ session_start();
 include '../config/koneksi.php';
 if ($_SESSION['status'] != 'login') {
     echo "<script>
-    alert('Anda belum login!!!');
+    alert('You are not logged in yet!!!');
     location.href='../index.php';
     </script>";
 }
@@ -30,14 +30,14 @@ if(isset($_POST['photo_id']) && isset($_POST['title']) && isset($_POST['descript
                 // Jika berhasil disimpan, arahkan kembali ke halaman sebelumnya dengan pesan sukses
                 if($_SESSION['role']=== "admin"){
                     echo "<script>
-                    alert('Data Berhasil DiSimpan');
+                    alert('Data saved successfully');
                     location.href='../admin/foto.php';
                     </script>";
                     
                 }
                 else{
                     echo "<script>
-                    alert('Data Berhasil DiSimpan');
+                    alert('Data saved successfully');
                     location.href='../users/foto.php';
                     </script>";
             
@@ -46,14 +46,14 @@ if(isset($_POST['photo_id']) && isset($_POST['title']) && isset($_POST['descript
                 // Jika terjadi kesalahan dalam penyimpanan, tampilkan pesan error
                 if($_SESSION['role']=== "admin"){
                     echo "<script>
-                    alert('Data gagal DiSimpan');
+                    alert('Data failed to save');
                     location.href='../admin/foto.php';
                     </script>";
                     
                 }
                 else{
                     echo "<script>
-                    alert('Data gagal DiSimpan');
+                    alert('Data failed to save');
                     location.href='../users/foto.php';
                     </script>";
             
@@ -61,7 +61,7 @@ if(isset($_POST['photo_id']) && isset($_POST['title']) && isset($_POST['descript
             }
         } else {
             echo "<script>
-                alert('Gagal mengunggah file!');
+                alert('Failed to upload file!');
                 window.location.href = '../admin/foto.php';
                 window.location.href = '../users/foto.php';
             </script>";
@@ -75,14 +75,14 @@ if(isset($_POST['photo_id']) && isset($_POST['title']) && isset($_POST['descript
             // Jika berhasil disimpan, arahkan kembali ke halaman sebelumnya dengan pesan sukses
             if($_SESSION['role']=== "admin"){
                 echo "<script>
-                alert('Data Berhasil DiSimpan');
+                alert('Data Saved Successfully');
                 location.href='../admin/foto.php';
                 </script>";
                 
             }
             else{
                 echo "<script>
-                alert('Data Berhasil DiSimpan');
+                alert('Data Saved Successfully');
                 location.href='../users/foto.php';
                 </script>";
         
@@ -91,14 +91,14 @@ if(isset($_POST['photo_id']) && isset($_POST['title']) && isset($_POST['descript
             // Jika terjadi kesalahan dalam penyimpanan, tampilkan pesan error
             if($_SESSION['role']=== "admin"){
                 echo "<script>
-                alert('Data Gagal DiSimpan');
+                alert('Data failed to save');
                 location.href='../admin/foto.php';
                 </script>";
                 
             }
             else{
                 echo "<script>
-                alert('Data Gagal DiSimpan');
+                alert('Data failed to save');
                 location.href='../users/foto.php';
                 </script>";
         

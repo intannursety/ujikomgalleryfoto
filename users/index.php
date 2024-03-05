@@ -1,11 +1,12 @@
 <?php
 session_start();
 include "../config/koneksi.php";
-
+$user_id = $_SESSION['user_id'];
+$username = $_SESSION['username']; // Mengganti 'username' menjadi 'user_name'
 if (!isset($_SESSION['status']) || $_SESSION['status'] != 'login') {
     echo "<script>
     alert('Anda belum login!!!');
-    location.href='../index.php';
+    location.href='../index.php'; // Mengganti 'locaion.herf' menjadi 'location.href'
     </script>";
     exit;
 }
@@ -21,6 +22,18 @@ if (!isset($_SESSION['status']) || $_SESSION['status'] != 'login') {
     <title>Gallery Photo</title>
     <link rel="stylesheet" type="text/css" href="../assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+    .comment-container {
+        margin-bottom: 20px;
+        /* Jarak antara komentar dengan komentar di atasnya */
+    }
+
+    .btn-delete {
+        margin-top: 10px;
+        /* Jarak antara tombol Delete dengan komentar di atasnya */
+    }
+    </style>
 
 </head>
 
@@ -46,7 +59,7 @@ if (!isset($_SESSION['status']) || $_SESSION['status'] != 'login') {
     <div class="container " style="margin:7em">
         <div class="row">
             <?php
-            $query = mysqli_query($koneksi, "SELECT * FROM photos");
+            $query = mysqli_query($koneksi, "SELECT photos.*,users.username FROM photos INNER JOIN users ON photos.user_id = users.user_id  ");
             while ($data = mysqli_fetch_array($query)) {
             ?>
 
@@ -57,9 +70,10 @@ if (!isset($_SESSION['status']) || $_SESSION['status'] != 'login') {
                         title="<?php echo $data['title'] ?>" style="height: 12rem;">
                     <div class="card-footer text-center">
 
+                    <i class="fas fa-exclamation-triangle text-danger" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#reportModal<?php echo $data['photo_id'] ?>"></i>
                         <?php
                             $photo_id = $data['photo_id'];
-                            $ceksuka = mysqli_query($koneksi, "SELECT * FROM likes WHERE photo_id = '$photo_id'");
+                            $ceksuka = mysqli_query($koneksi, "SELECT * FROM likes WHERE photo_id = '$photo_id' AND user_id = '$user_id'");
                             if (mysqli_num_rows($ceksuka) == 1) { ?>
                         <a href="../config/proses_like.php?photo_id=<?php echo $data['photo_id'] ?>" type="submit"
                             name="batalsuka"><i class="fa fa-heart" style='color:red'></i></a>
@@ -77,13 +91,15 @@ if (!isset($_SESSION['status']) || $_SESSION['status'] != 'login') {
                         <?php
                             $photo_id = $data['photo_id'];
                             $jmlkomen = mysqli_query($koneksi, "SELECT * FROM comments WHERE photo_id='$photo_id'");
-                            if ($jmlkomen) {
-                                echo mysqli_num_rows($jmlkomen) . ' comment';
-                            } else {
-                                echo '0 comment';
-                            }
-                        
+                            $count_comments = mysqli_num_rows($jmlkomen);
+                            echo $count_comments . ' comment';
                             ?>
+                        <!-- Menampilkan Nama Pengguna yang Berkomentar -->
+                        <?php
+                            $comment_user_query = mysqli_query($koneksi, "SELECT users.username FROM comments INNER JOIN users ON comments.user_id = users.user_id WHERE comments.photo_id = {$data['photo_id']} LIMIT 1");
+                            $comment_username = mysqli_fetch_assoc($comment_user_query);
+                            if(isset($comment_username['username'])): ?>
+                        <?php endif; ?>
                     </div>
                 </div>
 
@@ -103,18 +119,11 @@ if (!isset($_SESSION['status']) || $_SESSION['status'] != 'login') {
                                             <div class="sticky-top">
                                                 <!-- Ganti ID dengan Nama Pengguna -->
                                                 <strong><?php echo $data['title'] ?></strong><br>
-                                                <?php 
-                                                $user_query = mysqli_query($koneksi, "SELECT * FROM users WHERE user_id = {$data['user_id']}");
-                                                $username = mysqli_fetch_assoc($user_query);
-                                                ?>
-                                                <?php if(isset($username['username'])): ?>
-                                                <span class="badge-bg-secondary"><?php echo $username['username']; ?></span>
-                                                <?php else: ?>
-                                                <span class="badge-bg-secondary">Nama Pengguna Tidak Tersedia</span>
-                                                <?php endif; ?>
-                                                <span class="badge-bg-secondary"><?php echo $data['created_at'] ?></span>
-                                            </div>
+                                                <span class="badge-bg-secondary"><?php echo $data['username'] ?></span>
+                                                <span
+                                                    class="badge-bg-secondary"><?php echo $data['created_at'] ?></span>
 
+                                            </div>
                                             <hr>
                                             <p style="text-align: left;">
                                                 <?php echo $data['description'] ?>
@@ -126,25 +135,28 @@ if (!isset($_SESSION['status']) || $_SESSION['status'] != 'login') {
                                                 while ($row = mysqli_fetch_assoc($comment_text)) {
                                                 ?>
 
-<div class="comment-container d-flex justify-content-between my-3"> <!-- Tambahkan class my-3 -->
-    <strong><?php echo $row['username'] ?></strong>
-    <?php echo $row['comment_text'] ?>
-    <div class="ml-auto">
-        <!-- Tombol Hapus Komentar -->
-        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-            data-bs-target="#deleteComment<?php echo $row['comment_id'] ?>">Delete</button>
-        <!-- Tombol Edit Komentar -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-            data-bs-target="#editComment<?php echo $row['comment_id'] ?>">Edit</button>
-    </div>
-</div>
-
-
+                                            <div class="comment-container d-flex flex-column">
+                                                <div class="d-flex justify-content-between">
+                                                    <strong><?php echo $row['username'] ?></strong>
+                                                    <div class="ml-auto">
+                                                        <!-- Tombol Hapus Komentar -->
+                                                        <button type="button" class="btn btn-danger"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#deleteComment<?php echo $row['comment_id'] ?>">Delete</button>
+                                                        <!-- Tombol Edit Komentar -->
+                                                        <button type="button" class="btn btn-primary"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#editComment<?php echo $row['comment_id'] ?>">Edit</button>
+                                                    </div>
+                                                </div>
+                                                <div style="margin-bottom: 10px;"><?php echo $row['comment_text'] ?>
+                                                </div>
+                                            </div>
 
                                             <?php } ?>
                                             <hr>
                                             <div class="sticky-bottom">
-                                                <form action="../config/proses_komentar.php" method="POST">
+                                                <form action="../config/proses_tambahkomentar.php" method="POST">
                                                     <div class="input-group">
                                                         <input type="hidden" name="photo_id"
                                                             value="<?php echo $data['photo_id'] ?>">
@@ -165,55 +177,17 @@ if (!isset($_SESSION['status']) || $_SESSION['status'] != 'login') {
                     </div>
                 </div>
 
-                <!-- Modal Edit Komentar -->
-                <?php
-$comment_text = mysqli_query($koneksi, "SELECT * FROM comments WHERE photo_id='$photo_id'");
-while ($row = mysqli_fetch_assoc($comment_text)) {
-?>
-                <div class="modal fade" id="editComment<?php echo $row['comment_id'] ?>" tabindex="-1"
-                    aria-labelledby="editCommentLabel<?php echo $row['comment_id'] ?>" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="editCommentLabel<?php echo $row['comment_id'] ?>">Edit
-                                    Comment</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form action="../config/proses_editkomentar.php" method="POST">
-                                    <input type="hidden" name="comment_id" value="<?php echo $row['comment_id'] ?>">
-                                    <div class="mb-3">
-                                        <label for="edit_comment_text<?php echo $row['comment_id'] ?>"
-                                            class="form-label">New Comment</label>
-                                        <textarea class="form-control"
-                                            id="edit_comment_text<?php echo $row['comment_id'] ?>" name="comment_text"
-                                            rows="3"><?php echo $row['comment_text'] ?></textarea>
-                                    </div>
-                                    <div class="modal-footer justify-content-between">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Cancel</button>
-                                        <button type="submit" class="btn btn-primary ms-auto">Save Changes</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <?php } ?>
-
                 <!-- Modal Hapus Komentar -->
                 <?php
-$comment_text = mysqli_query($koneksi, "SELECT * FROM comments WHERE photo_id='$photo_id'");
+$comment_text = mysqli_query($koneksi, "SELECT * FROM comments INNER JOIN users ON comments.user_id=users.user_id WHERE comments.photo_id='$photo_id'");
 while ($row = mysqli_fetch_assoc($comment_text)) {
 ?>
                 <div class="modal fade" id="deleteComment<?php echo $row['comment_id'] ?>" tabindex="-1"
-                    aria-labelledby="deleteCommentLabel<?php echo $row['comment_id'] ?>" aria-hidden="true">
+                    aria-labelledby="deleteCommentLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="deleteCommentLabel<?php echo $row['comment_id'] ?>">Delete
-                                    Comment</h5>
+                                <h5 class="modal-title" id="deleteCommentLabel">Delete Comment</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
@@ -230,7 +204,61 @@ while ($row = mysqli_fetch_assoc($comment_text)) {
                         </div>
                     </div>
                 </div>
-                <?php } ?>
+                <!-- Modal Edit Komentar -->
+                <div class="modal fade" id="editComment<?php echo $row['comment_id'] ?>" tabindex="-1"
+                    aria-labelledby="editCommentLabel<?php echo $row['comment_id'] ?>" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editCommentLabel<?php echo $row['comment_id'] ?>">Edit
+                                    Comment</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="../config/proses_editkomentar.php" method="POST">
+                                    <input type="hidden" name="comment_id" value="<?php echo $row['comment_id'] ?>">
+                                    <div class="mb-3">
+                                        <label for="editCommentText<?php echo $row['comment_id'] ?>"
+                                            class="form-label">Edit Comment Text</label>
+                                        <textarea class="form-control"
+                                            id="editCommentText<?php echo $row['comment_id'] ?>" rows="3"
+                                            name="editCommentText"><?php echo $row['comment_text'] ?></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+              <!-- Modal -->
+              
+              <!-- Icon Laporkan -->
+              
+              
+              <?php } ?>
+              <div class="modal fade" id="reportModal<?php echo $data['photo_id'] ?>" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h5 class="modal-title" id="reportModalLabel">Laporkan Foto</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                              <form action="../config/report_photo.php" method="POST">
+                                  <input type="hidden" name="photo_id" value="<?php echo $data['photo_id'] ?>">
+                                  <input type="hidden" name="username" value="<?php echo $_SESSION['username'] ?>">
+                                  <div class="mb-3">
+                                      <label for="reason" class="form-label">Alasan Melapor</label>
+                                      <textarea class="form-control" id="reason" name="reason" rows="3" required></textarea>
+                                  </div>
+                                  <button type="submit" class="btn btn-danger">Laporkan</button>
+                              </form>
+                          </div>
+                      </div>
+                  </div>
+              </div>
 
             </div>
 
@@ -242,6 +270,8 @@ while ($row = mysqli_fetch_assoc($comment_text)) {
         <p>&copy; Ujikom RPL | IntanNursetya</p>
     </footer>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script type="text/javascript" src="../assets/js/bootstrap.min.js"></script>
 </body>
 

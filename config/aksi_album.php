@@ -12,14 +12,14 @@ if (isset($_POST['tambah'])) {
 
     if($_SESSION['role']=== "admin"){
         echo "<script>
-        alert('Data Berhasil DiSimpan');
+        alert('Data saved successfully');
         location.href='../admin/album.php';
         </script>";
         
     }
     else{
         echo "<script>
-        alert('Data Berhasil DiSimpan');
+        alert('Data saved successfully');
         location.href='../users/album.php';
         </script>";
 
@@ -40,14 +40,14 @@ if (isset($_POST['edit'])) {
     if (mysqli_stmt_execute($stmt)) {
         if($_SESSION['role']=== "admin"){
             echo "<script>
-            alert('Data Berhasil DiSimpan');
+            alert('Data saved successfully');
             location.href='../admin/album.php';
             </script>";
             
         }
         else{
             echo "<script>
-            alert('Data Berhasil DiSimpan');
+            alert('Data saved successfully');
             location.href='../users/album.php';
             </script>";
     
@@ -67,14 +67,14 @@ if (isset($_POST['hapus'])){
     if($sql){
         if($_SESSION['role']=== "admin"){
             echo "<script>
-            alert('Data Berhasil DiSimpan');
+            alert('Data saved successfully');
             location.href='../admin/album.php';
             </script>";
             
         }
         else{
             echo "<script>
-            alert('Data Berhasil DiSimpan');
+            alert('Data saved successfully');
             location.href='../users/album.php';
             </script>";
     

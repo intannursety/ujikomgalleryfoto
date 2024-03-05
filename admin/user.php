@@ -38,6 +38,7 @@ $result = mysqli_query($koneksi, $query);
                 <a href="home.php" class="nav-link">Home</a>
                 <a href="album.php" class="nav-link">Album</a>
                 <a href="foto.php" class="nav-link">Foto</a>
+                <a href="report.php" class="nav-link">Report</a>
             </div>
             <a href="../config/aksi_logout.php" class="btn btn-outline-danger m-1"> Logout </a>
         </div>

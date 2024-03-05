@@ -28,19 +28,19 @@ if (isset($_POST['Kirim'])) {
                 header("Location: ../users/index.php");
                 exit;
             } else {
-                echo 'Peran pengguna tidak valid';
+                echo 'Invalid user role';
             }
         } else {
             // Jika password tidak cocok, beri pesan kesalahan
             echo "<script>
-                alert('Username atau password salah!');
+                alert('Incorrect username or password!');
                 window.location.href='../login.php';
                 </script>";
         }
     } else {
         // Jika pengguna tidak ditemukan, beri pesan kesalahan
         echo "<script>
-            alert('Akun tidak ditemukan!');
+            alert('Account not found!');
             window.location.href='../login.php';
             </script>";
     }

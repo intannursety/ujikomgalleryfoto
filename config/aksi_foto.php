@@ -21,14 +21,14 @@ if (isset($_POST['tambah'])) {
 
 if($_SESSION['role']=== "admin"){
     echo "<script>
-    alert('Data Berhasil DiSimpan');
+    alert('Data Saved Successfully');
     location.href='../admin/foto.php';
     </script>";
     
 }
 else{
     echo "<script>
-    alert('Data Berhasil DiSimpan');
+    alert('Data Saved Successfully');
     location.href='../users/foto.php';
     </script>";
 
@@ -65,14 +65,14 @@ if (isset($_POST['edit'])) {
     }
     if($_SESSION['role']=== "admin"){
         echo "<script>
-        alert('Data Berhasil DiSimpan');
+        alert('Data Saved Successfully');
         location.href='../admin/foto.php';
         </script>";
         
     }
     else{
         echo "<script>
-        alert('Data Berhasil DiSimpan');
+        alert('Data Saved Successfully');
         location.href='../users/foto.php';
         </script>";
 
@@ -92,14 +92,14 @@ if (isset($_POST['hapus'])) {
 
     if($_SESSION['role']=== "admin"){
         echo "<script>
-        alert('Data Berhasil DiSimpan');
+        alert('Data Saved Successfully');
         location.href='../admin/foto.php';
         </script>";
         
     }
     else{
         echo "<script>
-        alert('Data Berhasil DiSimpan');
+        alert('Data Saved Successfully');
         location.href='../users/foto.php';
         </script>";
 

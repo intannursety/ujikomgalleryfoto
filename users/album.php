@@ -79,7 +79,7 @@ $result = mysqli_query($koneksi, $sql);
                                 <?php
                                 $no = 1;
                                 $user_id = $_SESSION['status'];
-                                $sql = mysqli_query($koneksi,  "SELECT * FROM albums");
+                                $sql = mysqli_query($koneksi,  "SELECT * FROM albums WHERE user_id = {$_SESSION['user_id']} ");
                                 while($data = mysqli_fetch_assoc($sql)){
                                 ?>
                                 <tr>

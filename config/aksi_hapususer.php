@@ -14,14 +14,14 @@ if (isset($_POST['tambah'])) {
     if (mysqli_query($koneksi, $sql)) {
         if($_SESSION['role']=== "admin"){
             echo "<script>
-            alert('Data Berhasil DiSimpan');
+            alert('Data Saved Successfully');
             location.href='../admin/user.php';
             </script>";
             
         }
         else{
             echo "<script>
-            alert('Data Berhasil DiSimpan');
+            alert('Data Saved Successfully');
             location.href='../users/user.php';
             </script>";
     
@@ -48,14 +48,14 @@ if (isset($_POST['edit'])) {
     if (mysqli_query($koneksi, $sql)) {
         if($_SESSION['role']=== "admin"){
             echo "<script>
-            alert('Data Berhasil DiSimpan');
+            alert('Data Saved Successfully');
             location.href='../admin/user.php';
             </script>";
             
         }
         else{
             echo "<script>
-            alert('Data Berhasil DiSimpan');
+            alert('Data Saved Successfully');
             location.href='../users/user.php';
             </script>";
     
@@ -78,14 +78,14 @@ if (isset($_POST['hapus'])) {
     if (mysqli_query($koneksi, $sql)) {
         if($_SESSION['role']=== "admin"){
             echo "<script>
-            alert('Data Berhasil DiSimpan');
+            alert('Data Saved Successfully');
             location.href='../admin/user.php';
             </script>";
             
         }
         else{
             echo "<script>
-            alert('Data Berhasil DiSimpan');
+            alert('Data Saved Successfully');
             location.href='../users/user.php';
             </script>";
     

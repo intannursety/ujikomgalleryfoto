@@ -3,7 +3,7 @@ session_start();
 include '../config/koneksi.php';
 if ($_SESSION['status'] != 'login') {
     echo "<script>
-    alert('Anda belum login!!!');
+    alert('You are not logged in yet!!!');
     location.href='../index.php';
     </script>";
 }
@@ -19,14 +19,14 @@ if(isset($_POST['photo_id'])){
         // Jika berhasil dihapus, arahkan kembali ke halaman sebelumnya dengan pesan sukses
         if($_SESSION['role']=== "admin"){
             echo "<script>
-            alert('Data Berhasil DiSimpan');
+            alert('Data Saved Successfully');
             location.href='../admin/foto.php';
             </script>";
             
         }
         else{
             echo "<script>
-            alert('Data Berhasil DiSimpan');
+            alert('Data Saved Successfully');
             location.href='../users/foto.php';
             </script>";
     
@@ -35,14 +35,14 @@ if(isset($_POST['photo_id'])){
         // Jika terjadi kesalahan dalam penghapusan, tampilkan pesan error
         if($_SESSION['role']=== "admin"){
             echo "<script>
-            alert('Data Gagal DiSimpan');
+            alert('Data Failed to Save');
             location.href='../admin/foto.php';
             </script>";
             
         }
         else{
             echo "<script>
-            alert('Data Gagal DiSimpan');
+            alert('Data Failed to Save');
             location.href='../users/foto.php';
             </script>";
     

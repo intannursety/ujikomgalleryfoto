@@ -24,12 +24,15 @@ if (!isset($_SESSION['status']) || $_SESSION['status'] != 'login') {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .comment-container {
-            margin-bottom: 20px; /* Jarak antara komentar dengan komentar di atasnya */
-        }
-        .btn-delete {
-            margin-top: 10px; /* Jarak antara tombol Delete dengan komentar di atasnya */
-        }
+    .comment-container {
+        margin-bottom: 20px;
+        /* Jarak antara komentar dengan komentar di atasnya */
+    }
+
+    .btn-delete {
+        margin-top: 10px;
+        /* Jarak antara tombol Delete dengan komentar di atasnya */
+    }
     </style>
 
 </head>
@@ -47,6 +50,7 @@ if (!isset($_SESSION['status']) || $_SESSION['status'] != 'login') {
                     <a href="home.php" class="nav-link">Home</a>
                     <a href="album.php" class="nav-link">Album</a>
                     <a href="foto.php" class="nav-link">Foto</a>
+                    <a href="report.php" class="nav-link">Report</a>
                 </div>
                 <a href="../index.php" class="btn btn-outline-danger m-1">
                     Logout </a>
@@ -58,7 +62,7 @@ if (!isset($_SESSION['status']) || $_SESSION['status'] != 'login') {
     <div class="container " style="margin:7em">
         <div class="row">
             <?php
-            $query = mysqli_query($koneksi, "SELECT * FROM photos");
+            $query = mysqli_query($koneksi, "SELECT photos.*,users.username FROM photos INNER JOIN users ON users.user_id = photos.user_id");
             while ($data = mysqli_fetch_array($query)) {
             ?>
 
@@ -111,8 +115,9 @@ if (!isset($_SESSION['status']) || $_SESSION['status'] != 'login') {
                                             <div class="sticky-top">
                                                 <!-- Ganti ID dengan Nama Pengguna -->
                                                 <strong><?php echo $data['title'] ?></strong><br>
-                                                <span class="badge-bg-secondary"><?php echo $username ?></span>
-                                                <span class="badge-bg-secondary"><?php echo $data['created_at'] ?></span>
+                                                <span class="badge-bg-secondary"><?php echo $data['username'] ?></span>
+                                                <span
+                                                    class="badge-bg-secondary"><?php echo $data['created_at'] ?></span>
 
                                             </div>
                                             <hr>
@@ -125,10 +130,10 @@ if (!isset($_SESSION['status']) || $_SESSION['status'] != 'login') {
                                                 $comment_text = mysqli_query($koneksi, "SELECT * FROM comments INNER JOIN users ON comments.user_id=users.user_id WHERE comments.photo_id='$photo_id'");
                                                 while ($row = mysqli_fetch_assoc($comment_text)) {
                                                 ?>
-
                                             <div class="comment-container d-flex justify-content-between">
-                                                <strong><?php echo $row['username'] ?></strong>
-                                                <?php echo $row['comment_text'] ?>
+                                                <strong class="username"
+                                                    style="margin-right: 10px; margin-bottom: 5px;"><?php echo $row['username'] ?></strong>
+                                                <div class="comment"><?php echo $row['comment_text'] ?></div>
                                                 <div class="ml-auto">
                                                     <!-- Tombol Hapus Komentar -->
                                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal"
@@ -137,10 +142,12 @@ if (!isset($_SESSION['status']) || $_SESSION['status'] != 'login') {
                                             </div>
 
 
+
+
                                             <?php } ?>
                                             <hr>
                                             <div class="sticky-bottom">
-                                                <form action="../config/proses_komentar.php" method="POST">
+                                                <form action="../config/proses_komen_admin.php" method="POST">
                                                     <div class="input-group">
                                                         <input type="hidden" name="photo_id"
                                                             value="<?php echo $data['photo_id'] ?>">

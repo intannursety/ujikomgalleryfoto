@@ -5,7 +5,7 @@ include 'koneksi.php';
 // Periksa apakah pengguna sudah login
 if (!isset($_SESSION['status']) || $_SESSION['status'] != 'login') {
     echo "<script>
-    alert('Anda belum login!');
+    alert('You are not logged in yet!');
     location.href='../index.php';
     </script>";
     exit; // Hentikan eksekusi skrip jika pengguna belum login
@@ -27,14 +27,14 @@ if (isset($_POST['hapus'])) {
         // Jika terjadi kesalahan saat menghapus, tampilkan pesan kesalahan
         if($_SESSION['role']=== "admin"){
             echo "<script>
-            alert('Data Berhasil DiSimpan');
+            alert('Data Saved Successfully');
             location.href='../admin/user.php';
             </script>";
             
         }
         else{
             echo "<script>
-            alert('Data Berhasil DiSimpan');
+            alert('Data Saved Successfullyn');
             location.href='../users/user.php';
             </script>";
     

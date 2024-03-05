@@ -13,7 +13,7 @@ $sql = mysqli_query($koneksi, "INSERT INTO users (user_id, name, username, passw
 
 if ($sql) {
   echo "<script>
-      alert('Pendaftaran akun berhasil');
+      alert('Account registration successful');
       location.href='../login.php'; 
   </script>";
 } else {

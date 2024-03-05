@@ -23,7 +23,7 @@ if ($comment_id > 0) {
     } else {
         // Jika gagal menghapus komentar, tampilkan pesan error
         echo "<script>
-            alert('Gagal menghapus komentar.');
+            alert('Failed to delete comment.');
             window.history.back();
             </script>";
         exit(); // Penting untuk menghentikan eksekusi script setelah menampilkan pesan error
@@ -31,7 +31,7 @@ if ($comment_id > 0) {
 } else {
     // Jika comment_id tidak valid, tampilkan pesan error
     echo "<script>
-        alert('ID komentar tidak valid.');
+        alert('Invalid comment ID.');
         window.history.back();
         </script>";
     exit(); // Penting untuk menghentikan eksekusi script setelah menampilkan pesan error
