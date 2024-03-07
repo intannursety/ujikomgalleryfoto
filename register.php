@@ -21,7 +21,7 @@
 
                 </div>
                 <a href="register.php" class="btn btn-outline-primary m-1">
-                    Daftar </a>
+                    Register </a>
                 <a href="login.php" class="btn btn-outline-success m-1">
                     Login </a>
             </div>
@@ -51,7 +51,7 @@
                             </div>
                         </form>
                         <hr>
-                        <p>Sudah punya akun? <a href="login.php">Login disini!</a></p>
+                        <p>Already have an account? <a href="login.php">Login here!</a></p>
                     </div>
                 </div>
             </div>

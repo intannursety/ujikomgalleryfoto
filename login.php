@@ -46,7 +46,7 @@
                             </div>
                         </form>
                         <hr>
-                        <p>Belum punya akun? <a href="register.php">Register disini!</a></p>
+                        <p>Don't have an account? <a href="register.php">Register here!</a></p>
                     </div>
                 </div>
             </div>

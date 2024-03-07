@@ -130,30 +130,37 @@ if (!isset($_SESSION['status']) || $_SESSION['status'] != 'login') {
                                             </p>
                                             <hr>
                                             <?php
-                                                $photo_id = $data['photo_id'];
-                                                $comment_text = mysqli_query($koneksi, "SELECT * FROM comments INNER JOIN users ON comments.user_id=users.user_id WHERE comments.photo_id='$photo_id'");
-                                                while ($row = mysqli_fetch_assoc($comment_text)) {
-                                                ?>
+$photo_id = $data['photo_id'];
+$comment_text = mysqli_query($koneksi, "SELECT * FROM comments INNER JOIN users ON comments.user_id=users.user_id WHERE comments.photo_id='$photo_id'");
+while ($row = mysqli_fetch_assoc($comment_text)) {
+    // Memeriksa apakah pengguna yang saat ini masuk adalah pemilik komentar
+    $is_owner = false; // Defaultnya, pengguna bukan pemilik komentar
+    if(isset($_SESSION['user_id']) && $row['user_id'] == $_SESSION['user_id']) {
+        $is_owner = true; // Jika ID pengguna yang saat ini masuk cocok dengan ID pengguna yang membuat komentar, maka pengguna adalah pemilik komentar
+    }
+?>
 
-                                            <div class="comment-container d-flex flex-column">
-                                                <div class="d-flex justify-content-between">
-                                                    <strong><?php echo $row['username'] ?></strong>
-                                                    <div class="ml-auto">
-                                                        <!-- Tombol Hapus Komentar -->
-                                                        <button type="button" class="btn btn-danger"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#deleteComment<?php echo $row['comment_id'] ?>">Delete</button>
-                                                        <!-- Tombol Edit Komentar -->
-                                                        <button type="button" class="btn btn-primary"
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#editComment<?php echo $row['comment_id'] ?>">Edit</button>
-                                                    </div>
-                                                </div>
-                                                <div style="margin-bottom: 10px;"><?php echo $row['comment_text'] ?>
-                                                </div>
-                                            </div>
+<div class="comment-container d-flex flex-column">
+    <div class="d-flex justify-content-between">
+        <strong><?php echo $row['username'] ?></strong>
+        <div class="ml-auto">
+            <!-- Tombol Hapus Komentar -->
+            <?php if ($is_owner) { ?>
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteComment<?php echo $row['comment_id'] ?>">Delete</button>
+            <?php } ?>
+            <!-- Tombol Edit Komentar -->
+            <?php if ($is_owner) { ?>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editComment<?php echo $row['comment_id'] ?>">Edit</button>
+            <?php } ?>
+        </div>
+    </div>
+    <div style="margin-bottom: 10px;"><?php echo $row['comment_text'] ?></div>
+</div>
 
-                                            <?php } ?>
+<?php } ?>
+
+
+                                           
                                             <hr>
                                             <div class="sticky-bottom">
                                                 <form action="../config/proses_tambahkomentar.php" method="POST">
