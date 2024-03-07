@@ -36,16 +36,14 @@
                             <h5>Register</h5>
                         </div>
                         <form action="config/aksi_register.php" method="POST">
-                            <label class="form-label">user_id</label>
-                            <input type="text" name="user_id" class="form-control" required>
                             <label class="form-label">name</label>
                             <input type="name" name="name" class="form-control" required>
+                            <label class="form-label">username</label>
+                            <input type="text" name="username" class="form-control" required>
                             <label class="form-label">email</label>
                             <input type="Email" name="email" class="form-control" required>
                             <label class="form-label">password</label>
                             <input type="password" name="Password" class="form-control" required>
-                            <label class="form-label">username</label>
-                            <input type="text" name="username" class="form-control" required>
                             <div class="d-grid mt-2">
                                 <button class="btn btn-primary" type="submit" name="Kirim">Register</button>
                             </div>
