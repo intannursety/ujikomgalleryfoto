@@ -139,25 +139,6 @@ while ($row = mysqli_fetch_assoc($comment_text)) {
         $is_owner = true; // Jika ID pengguna yang saat ini masuk cocok dengan ID pengguna yang membuat komentar, maka pengguna adalah pemilik komentar
     }
 ?>
-<<<<<<< HEAD
-
-<div class="comment-container d-flex flex-column">
-    <div class="d-flex justify-content-between">
-        <strong><?php echo $row['username'] ?></strong>
-        <div class="ml-auto">
-            <!-- Tombol Hapus Komentar -->
-            <?php if ($is_owner) { ?>
-                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteComment<?php echo $row['comment_id'] ?>">Delete</button>
-            <?php } ?>
-            <!-- Tombol Edit Komentar -->
-            <?php if ($is_owner) { ?>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editComment<?php echo $row['comment_id'] ?>">Edit</button>
-            <?php } ?>
-        </div>
-    </div>
-    <div style="margin-bottom: 10px;"><?php echo $row['comment_text'] ?></div>
-</div>
-=======
 
 <div class="comment-container d-flex flex-column">
     <div class="d-flex justify-content-between">
